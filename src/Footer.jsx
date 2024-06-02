@@ -1,29 +1,36 @@
 import React, { useContext, useState } from 'react';
 import { TodoListContext } from './context/TodoListContext';
 import { MdOutlineAdd } from 'react-icons/md';
+import { DarkModeContext } from './context/DarkModeContext';
 
 export default function Footer() {
-  const { setTodoList } = useContext(TodoListContext);
+  const { todoList, updateTodoList } = useContext(TodoListContext);
+  const { darkMode } = useContext(DarkModeContext);
   const [newTodo, setNewTodo] = useState('');
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTodoList((prev) => [
-      ...prev,
+    const newList = [
+      ...todoList,
       { id: Date.now(), title: newTodo, completed: false },
-    ]);
+    ];
+    updateTodoList(newList);
     setNewTodo('');
   };
   return (
     <footer>
       <form
         onSubmit={handleSubmit}
-        className="flex justify-between border-lightGray border-t-2"
+        className={`flex justify-between shadow-custom`}
       >
         <input
-          className="px-6 py-4 box-border flex-grow"
+          className={`px-6 py-4 box-border flex-grow ${
+            darkMode
+              ? 'bg-lightDark placeholder:text-white text-white'
+              : 'bg-white'
+          }`}
           type="text"
           value={newTodo}
-          placeholder="type text here..."
+          placeholder="Type text here..."
           onChange={(e) => {
             setNewTodo(e.target.value);
           }}

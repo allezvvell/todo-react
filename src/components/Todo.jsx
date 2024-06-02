@@ -8,17 +8,22 @@ export default function Todo({ title, completed, id }) {
   if (isEdit) {
     return (
       <>
-        <TodoEdit setIsEdit={setIsEdit} id={id} />
+        <TodoEdit
+          setIsEdit={setIsEdit}
+          id={id}
+          title={title}
+          completed={completed}
+        />
       </>
     );
   }
   return (
     <>
       <TodoDefault
-        completed={completed}
-        title={title}
         setIsEdit={setIsEdit}
         id={id}
+        title={title}
+        completed={completed}
       />
     </>
   );

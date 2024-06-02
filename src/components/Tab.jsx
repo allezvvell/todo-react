@@ -17,7 +17,7 @@ export default function Tab() {
     <div>
       {tabs.map((tab, index) => (
         <button
-          className={`text-white mr-2 ${
+          className={`text-white mr-3 ${
             index === activeTab ? 'border-t-2 border-white' : ''
           }`}
           key={index}

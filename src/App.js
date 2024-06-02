@@ -11,16 +11,16 @@ import { DarkModeProvider } from './context/DarkModeContext';
  * delete 버튼을 누르면 할일이 삭제된다
  * 체크박스를 클릭하면 완료 표시된다
  * 탭메뉴를 누르면 할일 리스트가 filtering 된다
+ * edit 버튼을 누르면 할일을 수정 할 수 있다
  * darkMode 버튼을 누르면 테마가 전환된다
  *
  * 값이 localStorage에 저장된다
- * edit 버튼을 누르면 할일을 수정 할 수 있다
  */
 
 function App() {
   return (
     <div className="bg-beige w-full h-lvh overflow-hidden flex justify-center items-center">
-      <div className="rounded-lg overflow-hidden w-96 flex flex-col">
+      <div className="rounded-lg overflow-hidden w-100 h-3/5 flex flex-col shadow-lg">
         <DarkModeProvider>
           <TabProvider>
             <Header />
