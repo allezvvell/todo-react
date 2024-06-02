@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "react 공부하기",
+    "completed": true
+  },
+  {
+    "id": 2,
+    "title": "공원에 산책가기",
+    "completed": false
+  }
+]
