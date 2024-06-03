@@ -3,12 +3,14 @@ import Todo from './components/Todo';
 import { TodoListContext } from './context/TodoListContext';
 import { TabContext } from './context/TabContext';
 import { DarkModeContext } from './context/DarkModeContext';
+import Spinner from './components/Spinner';
 
 export default function TodoList() {
   const { todoList, isLoading, isError } = useContext(TodoListContext);
   const { tab } = useContext(TabContext);
   const { darkMode } = useContext(DarkModeContext);
   const [filteredList, setFilteredList] = useState(todoList);
+
   useEffect(() => {
     let newList;
     switch (tab) {
@@ -27,8 +29,26 @@ export default function TodoList() {
     setFilteredList(newList);
   }, [tab, todoList]);
 
-  if (isLoading) return <div>Loaindg...</div>;
-  if (isError) return <div>에러가 발생했습니다. 새로고침 해주세요.</div>;
+  if (isLoading)
+    return (
+      <div
+        className={`flex-grow overflow-auto relative ${
+          darkMode ? 'bg-dark' : 'bg-white'
+        }`}
+      >
+        <Spinner isLoading={isLoading} />
+      </div>
+    );
+  if (isError)
+    return (
+      <div
+        className={`flex-grow overflow-auto ${
+          darkMode ? 'bg-dark text-white' : 'bg-white'
+        }`}
+      >
+        에러가 발생했습니다. 새로고침 해주세요.
+      </div>
+    );
   return (
     <div
       className={`flex-grow overflow-auto ${darkMode ? 'bg-dark' : 'bg-white'}`}
