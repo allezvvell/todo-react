@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'selector',
   content: ['./src/**/*.{js,jsx}'],
   theme: {
     extend: {
@@ -29,8 +30,6 @@ module.exports = {
     },
     fontFamily: {
       list: ['GowunBatang', 'sans-serif'],
-      nanumBold: ['NanumGothicBold'],
-      nanum: ['NanumGothic'],
     },
   },
   plugins: [],

@@ -7,10 +7,16 @@ export function TodoListProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const updateTodoList = (list) => {
-    setTodoList(list);
-    localStorage.setItem('todoList', JSON.stringify(list));
+  const addTodo = (todo) => {
+    setTodoList((prev) => [...prev, todo]);
   };
+  const deleteTodo = (todo) => {
+    setTodoList((prev) => prev.filter((t) => t.id !== todo.id));
+  };
+  const updateTodo = (todo) => {
+    setTodoList((prev) => prev.map((t) => (t.id === todo.id ? todo : t)));
+  };
+
   useEffect(() => {
     const savedList = localStorage.getItem('todoList');
     if (savedList === null) {
@@ -23,7 +29,7 @@ export function TodoListProvider({ children }) {
           return res.json();
         })
         .then((data) => {
-          updateTodoList(data);
+          setTodoList(data);
         })
         .catch((error) => {
           setIsError(true);
@@ -36,9 +42,14 @@ export function TodoListProvider({ children }) {
       setTodoList(JSON.parse(savedList));
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('todoList', JSON.stringify(todoList));
+  }, [todoList]);
+
   return (
     <TodoListContext.Provider
-      value={{ todoList, isLoading, isError, setTodoList, updateTodoList }}
+      value={{ todoList, isLoading, isError, addTodo, deleteTodo, updateTodo }}
     >
       {children}
     </TodoListContext.Provider>

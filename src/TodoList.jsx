@@ -1,73 +1,50 @@
-import React, { useContext, useState, useEffect } from 'react';
-import Todo from './components/Todo';
+import React, { useContext } from 'react';
+import Todo from './components/TodoList/Todo';
 import { TodoListContext } from './context/TodoListContext';
-import { TabContext } from './context/TabContext';
-import { DarkModeContext } from './context/DarkModeContext';
+import { FilterContext } from './context/FilterContext';
 import Spinner from './components/Spinner';
 
 export default function TodoList() {
   const { todoList, isLoading, isError } = useContext(TodoListContext);
-  const { tab } = useContext(TabContext);
-  const { darkMode } = useContext(DarkModeContext);
-  const [filteredList, setFilteredList] = useState(todoList);
+  const { filter } = useContext(FilterContext);
 
-  useEffect(() => {
-    let newList;
-    switch (tab) {
-      case 'all':
-        newList = todoList?.filter((todo) => todo);
-        break;
-      case 'active':
-        newList = todoList?.filter((todo) => !todo.completed);
-        break;
-      case 'completed':
-        newList = todoList?.filter((todo) => todo.completed);
-        break;
-      default:
-        return;
-    }
-    setFilteredList(newList);
-  }, [tab, todoList]);
+  const filteredList = getFilteredList(todoList, filter);
 
   if (isLoading)
     return (
-      <div
-        className={`flex-grow overflow-auto relative ${
-          darkMode ? 'bg-dark' : 'bg-white'
-        }`}
-      >
+      <div className="flex-grow overflow-auto relative bg-white dark:bg-dark">
         <Spinner isLoading={isLoading} />
       </div>
     );
   if (isError)
     return (
-      <div
-        className={`flex-grow overflow-auto ${
-          darkMode ? 'bg-dark text-white' : 'bg-white'
-        }`}
-      >
+      <div className="flex-grow overflow-auto bg-white dark:bg-dark dark:text-white">
         에러가 발생했습니다. 새로고침 해주세요.
       </div>
     );
   return (
-    <div
-      className={`flex-grow overflow-auto ${darkMode ? 'bg-dark' : 'bg-white'}`}
-    >
-      <p className={`px-6 py-2 ${darkMode ? 'text-white' : 'text-chacol'}`}>
-        {filteredList?.length} {filteredList.length > 1 ? 'items' : 'item'}
+    <div className="flex-grow overflow-auto bg-white dark:bg-dark">
+      <p className="px-6 py-2 text-chacol dark:text-white">
+        {filteredList.length} {filteredList.length > 1 ? 'items' : 'item'}
       </p>
       <ul>
-        {filteredList?.map((todo) => (
-          <li
-            key={todo.id}
-            className={`font-list px-6 py-4 flex items-center ${
-              darkMode ? 'bg-dark odd:bg-deepDark' : 'bg-white odd:bg-light'
-            }`}
-          >
-            <Todo title={todo.title} completed={todo.completed} id={todo.id} />
-          </li>
+        {filteredList.map((todo) => (
+          <Todo todo={todo} key={todo.id} />
         ))}
       </ul>
     </div>
   );
 }
+
+const getFilteredList = (todoList, filter) => {
+  switch (filter) {
+    case 'all':
+      return [...todoList];
+    case 'active':
+      return todoList.filter((todo) => !todo.completed);
+    case 'completed':
+      return todoList.filter((todo) => todo.completed);
+    default:
+      throw new Error(`${filter} 잘못된 필터입니다`);
+  }
+};

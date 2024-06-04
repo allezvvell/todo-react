@@ -1,24 +1,19 @@
 import React, { useContext } from 'react';
-import { TodoListContext } from '../context/TodoListContext';
+import { TodoListContext } from '../../context/TodoListContext';
 
-export default function TodoCheckBox({ id, completed }) {
-  const { todoList, updateTodoList } = useContext(TodoListContext);
-  const handleChange = () => {
-    const newTodoList = todoList.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, completed: !todo.completed };
-      }
-      return todo;
-    });
-    updateTodoList(newTodoList);
-  };
+export default function TodoCheckBox({ todo }) {
+  const { updateTodo } = useContext(TodoListContext);
+  const { id, completed } = todo;
+
   return (
     <>
       <input
         type="checkbox"
         id={id}
         className="hidden"
-        onChange={handleChange}
+        onChange={() => {
+          updateTodo({ ...todo, completed: !completed });
+        }}
         checked={completed}
       />
       <label
