@@ -7,6 +7,7 @@ export default function Footer() {
   const [newTodo, setNewTodo] = useState('');
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (newTodo.trim().length === 0) return;
     addTodo({ id: Date.now(), title: newTodo, completed: false });
     setNewTodo('');
   };
@@ -26,7 +27,7 @@ export default function Footer() {
           }}
         />
         <button type="submit" className="bg-green text-white px-5 text-2xl">
-          <MdOutlineAdd />
+          <MdOutlineAdd className="hover:rotate-90 transition-all" />
         </button>
       </form>
     </footer>
