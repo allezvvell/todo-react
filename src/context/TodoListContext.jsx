@@ -18,8 +18,8 @@ export function TodoListProvider({ children }) {
   };
 
   useEffect(() => {
-    const savedList = localStorage.getItem('todoList');
-    if (savedList === null) {
+    const savedList = localStorage.todoList;
+    if (savedList === undefined) {
       setIsLoading(true);
       fetch('data/todo_list.json') //
         .then((res) => {
@@ -44,7 +44,7 @@ export function TodoListProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('todoList', JSON.stringify(todoList));
+    localStorage.todoList = JSON.stringify(todoList);
   }, [todoList]);
 
   return (
